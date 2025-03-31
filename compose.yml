@@ -1,0 +1,248 @@
+#*##############################################################################
+#*                                SERVICES
+#*##############################################################################
+
+services:
+  # * ---------------------------------------------------------------------------
+  # * Calamity
+  # * ---------------------------------------------------------------------------
+
+  super_terraria_server:
+    image: jacobsmile/tmodloader1.4:v2024.10.3.0
+    container_name: ${SERVER1_NAME}
+    user: ${USER_AND_GROUP}:${USER_AND_GROUP}
+    environment:
+      TMOD_AUTODOWNLOAD: ${SERVER1_MODS}
+      TMOD_ENABLEDMODS: ${SERVER1_MODS}
+      TMOD_SHUTDOWN_MESSAGE: GoodBye!
+      TMOD_AUTOSAVE_INTERVAL: 15
+      TMOD_MOTD: ${SERVER1_MOTD}
+      TMOD_PASS: ${SERVER1_PASS}
+      TMOD_MAXPLAYERS: 200
+      TMOD_WORLDNAME: ${SERVER1_WORLDNAME}
+      TMOD_WORLDSIZE: 2
+      TMOD_WORLDSEED: ${SERVER1_WORLDSEED}
+      TMOD_DIFFICULTY: 2
+      TMOD_USECONFIGFILE: No
+      UPDATE_NOTICE: false
+    volumes:
+      - "./${SERVER1_NAME}/data:/data"
+      # ! Uncomment the below line if you plan to use a mapped config file.
+      # - "/path/to/config/config.txt:/root/terraria-server/serverconfig.txt"
+    ports:
+      - 7777:7777
+    deploy:
+      resources:
+        limits:
+          cpus: "1"
+          memory: 2G
+    restart: unless-stopped
+    cpuset: "6"
+
+  # * ---------------------------------------------------------------------------
+  # * Rlcraft
+  # * ---------------------------------------------------------------------------
+
+  minecraftserver1:
+    image: itzg/minecraft-server:java8-graalvm-ce
+    container_name: ${SERVER2_NAME}
+    user: ${USER_AND_GROUP}:${USER_AND_GROUP}
+    volumes:
+      - ./${SERVER2_NAME}/data:/data
+    environment:
+      UID: ${USER_AND_GROUP}
+      GID: ${USER_AND_GROUP}
+      EULA: "true"
+      TYPE: "FORGE"
+      VERSION: "1.12.2"
+      FORGE_VERSION: "14.23.5.2860"
+      GENERIC_PACK: https://mediafilez.forgecdn.net/files/4612/990/RLCraft%20Server%20Pack%201.12.2%20-%20Release%20v2.9.3.zip
+      OVERRIDE_SERVER_PROPERTIES: "true"
+      DIFFICULTY: "hard"
+      MAX_TICK_TIME: -1
+      ALLOW_FLIGHT: "true"
+      ENABLE_COMMAND_BLOCK: "true"
+      ONLINE_MODE: "false"
+      SERVER_PORT: 25565
+      VIEW_DISTANCE: 6
+      SPAWN_PROTECTION: 0
+      SERVERNAME: ${SERVER2_SERVERNAME}
+      MOTD: ${SERVER2_MOTD}
+      SEED: ${SERVER2_WORLDSEED}
+      ICON: https://media.forgecdn.net/avatars/thumbnails/468/243/64/64/637751369169569212.png
+      MEMORY: 6G
+      JVM_OPTS: ${JVM8_OPTS}
+    ports:
+      - 25566:25565
+    deploy:
+      resources:
+        limits:
+          cpus: 6
+          memory: 6G
+    restart: unless-stopped
+    cpuset: 0-5
+
+  # * ---------------------------------------------------------------------------
+  # * BTW-(Better Than Wolves)
+  # * ---------------------------------------------------------------------------
+
+  # minecraftserver2:
+  #   image: itzg/minecraft-server:java8-graalvm-ce
+  #   container_name: ${SERVER3_NAME}
+  #   user: ${USER_AND_GROUP}:${USER_AND_GROUP}
+  #   volumes:
+  #     - ./${SERVER3_NAME}/data:/data
+  #   environment:
+  #     UID: ${USER_AND_GROUP}
+  #     GID: ${USER_AND_GROUP}
+  #     TYPE: "CUSTOM"
+  #     CUSTOM_SERVER: "/data/fabric-server-launch.jar"
+  #     EULA: "true"
+  #     VIEW_DISTANCE: 12
+  #     ONLINE_MODE: "false"
+  #     SERVER_PORT: 25565
+  #     SPAWN_PROTECTION: 0
+  #     SERVERNAME: ${SERVER3_SERVERNAME}
+  #     MOTD: ${SERVER3_MOTD}
+  #     SEED: ${SERVER3_WORLDSEED}
+  #     ICON: https://avatars.githubusercontent.com/u/45469498?s=200&v=4
+  #     MEMORY: 2G
+  #     JVM_OPTS: ${JVM8_OPTS}
+  #   ports:
+  #     - 25567:25565
+  #   deploy:
+  #     resources:
+  #       limits:
+  #         cpus: 6
+  #         memory: 2G
+  #   restart: unless-stopped
+  #   cpuset: 0-5
+
+  # * ---------------------------------------------------------------------------
+  # * Allthemods
+  # * ---------------------------------------------------------------------------
+
+  # minecraftserver3:
+  #   image: itzg/minecraft-server:java21-graalvm
+  #   container_name: ${SERVER4_NAME}
+  #   user: ${USER_AND_GROUP}:${USER_AND_GROUP}
+  #   volumes:
+  #     - ./${SERVER4_NAME}/data:/data
+  #   environment:
+  #     UID: ${USER_AND_GROUP}
+  #     GID: ${USER_AND_GROUP}
+  #     EULA: "true"
+  #     TYPE: CURSEFORGE
+  #     CF_SERVER_MOD: https://mediafilez.forgecdn.net/files/6273/373/ServerFiles-2.39.zip
+  #     CF_OVERRIDES_EXCLUSIONS: |
+  #       shaderpacks/**
+  #     OVERRIDE_SERVER_PROPERTIES: "true"
+  #     DIFFICULTY: "hard"
+  #     ALLOW_FLIGHT: "true"
+  #     ENABLE_COMMAND_BLOCK: "true"
+  #     VIEW_DISTANCE: 10
+  #     SIMULATION_DISTANCE: 5
+  #     ONLINE_MODE: "false"
+  #     SERVER_PORT: 25565
+  #     SPAWN_PROTECTION: 0
+  #     SERVERNAME: ${SERVER4_SERVERNAME}
+  #     MOTD: ${SERVER4_MOTD}
+  #     SEED: ${SERVER4_WORLDSEED}
+  #     MEMORY: 8G
+  #     JVM_OPTS: ${JVM21_OPTS}
+  #   ports:
+  #     - 25568:25565
+  #   deploy:
+  #     resources:
+  #       limits:
+  #         cpus: 6
+  #         memory: 8G
+  #   restart: unless-stopped
+  #   cpuset: 0-5
+
+  # * ---------------------------------------------------------------------------
+  # * Stoneblock
+  # * ---------------------------------------------------------------------------
+
+  # minecraftserver4:
+  #   image: itzg/minecraft-server:java8-graalvm-ce
+  #   container_name: ${SERVER5_NAME}
+  #   user: ${USER_AND_GROUP}:${USER_AND_GROUP}
+  #   volumes:
+  #     - ./${SERVER5_NAME}/data:/data
+  #   environment:
+  #     UID: ${USER_AND_GROUP}
+  #     GID: ${USER_AND_GROUP}
+  #     EULA: "true"
+  #     TYPE: CURSEFORGE
+  #     CF_SERVER_MOD: https://mediafilez.forgecdn.net/files/3016/966/stoneblock_1.0.37-server.zip
+  #     OVERRIDE_SERVER_PROPERTIES: "true"
+  #     DIFFICULTY: "hard"
+  #     ALLOW_FLIGHT: "true"
+  #     ENABLE_COMMAND_BLOCK: "true"
+  #     VIEW_DISTANCE: 6
+  #     ONLINE_MODE: "false"
+  #     SERVER_PORT: 25565
+  #     SPAWN_PROTECTION: 0
+  #     SERVERNAME: ${SERVER5_SERVERNAME}
+  #     MOTD: ${SERVER5_MOTD}
+  #     SEED: ${SERVER5_WORLDSEED}
+  #     MEMORY: 6G
+  #     JVM_OPTS: ${JVM8_OPTS}
+  #   ports:
+  #     - 25569:25565
+  #   deploy:
+  #     resources:
+  #       limits:
+  #         cpus: 6
+  #         memory: 6G
+  #   restart: unless-stopped
+  #   cpuset: 0-5
+
+  # * ---------------------------------------------------------------------------
+  # * Perfect
+  # * ---------------------------------------------------------------------------
+
+  minecraftserver5:
+    image: itzg/minecraft-server:java21-graalvm
+    container_name: ${SERVER6_NAME}
+    user: ${USER_AND_GROUP}:${USER_AND_GROUP}
+    volumes:
+      - ./${SERVER6_NAME}/data:/data
+      - ./${SERVER6_NAME}/cf-mods.txt:/data/cf-mods.txt
+    environment:
+      UID: ${USER_AND_GROUP}
+      GID: ${USER_AND_GROUP}
+      EULA: "true"
+      TYPE: fabric
+      VERSION: 1.20.1
+      FABRIC_LOADER_VERSION: 0.16.10
+      CF_API_KEY: ${API_KEY}
+      CURSEFORGE_FILES: "@cf-mods.txt"
+      CF_FORCE_SYNCHRONIZE: "true"
+      OVERRIDE_SERVER_PROPERTIES: "true"
+      MAX_TICK_TIME: -1
+      DIFFICULTY: "hard"
+      ALLOW_FLIGHT: "true"
+      ENABLE_COMMAND_BLOCK: "true"
+      VIEW_DISTANCE: 10
+      SIMULATION_DISTANCE: 5
+      ONLINE_MODE: "false"
+      SERVER_PORT: 25565
+      SPAWN_PROTECTION: 0
+      SERVERNAME: ${SERVER6_SERVERNAME}
+      MOTD: ${SERVER6_MOTD}
+      SEED: ${SERVER6_WORLDSEED}
+      ICON: https://media.forgecdn.net/avatars/1194/454/638769928567419945.jpg
+      MEMORY: 8G
+      JVM_OPTS: ${JVM21_OPTS}
+    ports:
+      - 25570:25565
+      - 24454:24454/udp
+    deploy:
+      resources:
+        limits:
+          cpus: 6
+          memory: 8G
+    restart: unless-stopped
+    cpuset: 0-5
