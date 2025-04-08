@@ -8,7 +8,6 @@ Atualmente, temos servidores para os seguintes jogos e versões:
 
 ### **Minecraft**
 
-- **Minecraft Base**: versão 1.21.4
 - **RLcraft**: versão 2.9.3.c (Minecraft 1.12.2)
 - **All the Mods**: versão 2.9.5 (Minecraft 1.21.2)
 - **Better Than Wolves (BTW)**: versão 3 (Minecraft 1.5.2)
@@ -27,4 +26,4 @@ Sinta-se à vontade para contribuir ou sugerir novos modpacks ou jogos que você
 
 ## Contato
 
-Se você tiver dúvidas ou quiser saber mais, entre em contato comigo através do [email christian.nascimento.falcao@gmail.com ou Github christiannfalcao].
+Se você tiver dúvidas ou quiser saber mais, entre em contato comigo através do [email](christian.nascimento.falcao@gmail.com ou Github christiannfalcao).
