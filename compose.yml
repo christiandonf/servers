@@ -1,4 +1,12 @@
 #*##############################################################################
+#*                               NETWORKS
+#*##############################################################################
+
+networks:
+  nginx-connection:
+    external: true
+
+#*##############################################################################
 #*                                SERVICES
 #*##############################################################################
 
@@ -25,12 +33,12 @@ services:
       TMOD_DIFFICULTY: 2
       TMOD_USECONFIGFILE: No
       UPDATE_NOTICE: false
+    networks:
+      nginx-connection:
     volumes:
       - "./${SERVER1_NAME}/data:/data"
       # ! Uncomment the below line if you plan to use a mapped config file.
       # - "/path/to/config/config.txt:/root/terraria-server/serverconfig.txt"
-    ports:
-      - 7777:7777
     deploy:
       resources:
         limits:
@@ -63,7 +71,7 @@ services:
       ALLOW_FLIGHT: "true"
       ENABLE_COMMAND_BLOCK: "true"
       ONLINE_MODE: "false"
-      SERVER_PORT: 25565
+      SERVER_PORT: 25566
       VIEW_DISTANCE: 6
       SPAWN_PROTECTION: 0
       SERVERNAME: ${SERVER2_SERVERNAME}
@@ -72,8 +80,10 @@ services:
       ICON: https://media.forgecdn.net/avatars/thumbnails/468/243/64/64/637751369169569212.png
       MEMORY: 6G
       JVM_OPTS: ${JVM8_OPTS}
-    ports:
-      - 25566:25565
+    networks:
+      nginx-connection:
+    expose:
+      - 25566/tcp
     deploy:
       resources:
         limits:
@@ -108,8 +118,10 @@ services:
   #     ICON: https://avatars.githubusercontent.com/u/45469498?s=200&v=4
   #     MEMORY: 2G
   #     JVM_OPTS: ${JVM8_OPTS}
-  #   ports:
-  #     - 25567:25565
+  #   networks:
+  #     nginx-connection:
+  #   expose:
+  #   - 25565/tcp
   #   deploy:
   #     resources:
   #       limits:
@@ -122,43 +134,45 @@ services:
   # * Allthemods
   # * ---------------------------------------------------------------------------
 
-  # minecraftserver3:
-  #   image: itzg/minecraft-server:java21-graalvm
-  #   container_name: ${SERVER4_NAME}
-  #   user: ${USER_AND_GROUP}:${USER_AND_GROUP}
-  #   volumes:
-  #     - ./${SERVER4_NAME}/data:/data
-  #   environment:
-  #     UID: ${USER_AND_GROUP}
-  #     GID: ${USER_AND_GROUP}
-  #     EULA: "true"
-  #     TYPE: CURSEFORGE
-  #     CF_SERVER_MOD: https://mediafilez.forgecdn.net/files/6273/373/ServerFiles-2.39.zip
-  #     CF_OVERRIDES_EXCLUSIONS: |
-  #       shaderpacks/**
-  #     OVERRIDE_SERVER_PROPERTIES: "true"
-  #     DIFFICULTY: "hard"
-  #     ALLOW_FLIGHT: "true"
-  #     ENABLE_COMMAND_BLOCK: "true"
-  #     VIEW_DISTANCE: 10
-  #     SIMULATION_DISTANCE: 5
-  #     ONLINE_MODE: "false"
-  #     SERVER_PORT: 25565
-  #     SPAWN_PROTECTION: 0
-  #     SERVERNAME: ${SERVER4_SERVERNAME}
-  #     MOTD: ${SERVER4_MOTD}
-  #     SEED: ${SERVER4_WORLDSEED}
-  #     MEMORY: 8G
-  #     JVM_OPTS: ${JVM21_OPTS}
-  #   ports:
-  #     - 25568:25565
-  #   deploy:
-  #     resources:
-  #       limits:
-  #         cpus: 6
-  #         memory: 8G
-  #   restart: unless-stopped
-  #   cpuset: 0-5
+  minecraftserver3:
+    image: itzg/minecraft-server:java21-graalvm
+    container_name: ${SERVER4_NAME}
+    user: ${USER_AND_GROUP}:${USER_AND_GROUP}
+    volumes:
+      - ./${SERVER4_NAME}/data:/data
+    environment:
+      UID: ${USER_AND_GROUP}
+      GID: ${USER_AND_GROUP}
+      EULA: "true"
+      TYPE: CURSEFORGE
+      CF_SERVER_MOD: https://mediafilez.forgecdn.net/files/6502/782/ServerFiles-2.47.zip
+      CF_OVERRIDES_EXCLUSIONS: |
+        shaderpacks/**
+      OVERRIDE_SERVER_PROPERTIES: "true"
+      DIFFICULTY: "hard"
+      ALLOW_FLIGHT: "true"
+      ENABLE_COMMAND_BLOCK: "true"
+      VIEW_DISTANCE: 10
+      SIMULATION_DISTANCE: 5
+      ONLINE_MODE: "false"
+      SERVER_PORT: 25568
+      SPAWN_PROTECTION: 0
+      SERVERNAME: ${SERVER4_SERVERNAME}
+      MOTD: ${SERVER4_MOTD}
+      SEED: ${SERVER4_WORLDSEED}
+      MEMORY: 8G
+      JVM_OPTS: ${JVM21_OPTS}
+    networks:
+      nginx-connection:
+    expose:
+      - 25568/tcp
+    deploy:
+      resources:
+        limits:
+          cpus: 6
+          memory: 8G
+    restart: unless-stopped
+    cpuset: 0-5
 
   # * ---------------------------------------------------------------------------
   # * Stoneblock
@@ -182,15 +196,17 @@ services:
   #     ENABLE_COMMAND_BLOCK: "true"
   #     VIEW_DISTANCE: 6
   #     ONLINE_MODE: "false"
-  #     SERVER_PORT: 25565
+  #     SERVER_PORT: 25567
   #     SPAWN_PROTECTION: 0
   #     SERVERNAME: ${SERVER5_SERVERNAME}
   #     MOTD: ${SERVER5_MOTD}
   #     SEED: ${SERVER5_WORLDSEED}
   #     MEMORY: 6G
   #     JVM_OPTS: ${JVM8_OPTS}
-  #   ports:
-  #     - 25569:25565
+  #   networks:
+  #     nginx-connection:
+  #   expose:
+  #   - 25567/tcp
   #   deploy:
   #     resources:
   #       limits:
@@ -228,7 +244,7 @@ services:
       VIEW_DISTANCE: 10
       SIMULATION_DISTANCE: 5
       ONLINE_MODE: "false"
-      SERVER_PORT: 25565
+      SERVER_PORT: 25570
       SPAWN_PROTECTION: 0
       SERVERNAME: ${SERVER6_SERVERNAME}
       MOTD: ${SERVER6_MOTD}
@@ -236,9 +252,11 @@ services:
       ICON: https://media.forgecdn.net/avatars/1194/454/638769928567419945.jpg
       MEMORY: 8G
       JVM_OPTS: ${JVM21_OPTS}
-    ports:
-      - 25570:25565
-      - 24454:24454/udp
+    networks:
+      nginx-connection:
+    expose:
+      - 25570/tcp
+      - 24454/udp
     deploy:
       resources:
         limits:
